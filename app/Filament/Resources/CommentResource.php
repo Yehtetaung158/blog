@@ -23,7 +23,15 @@ class CommentResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Forms\Components\TextInput::make('content')
+                    ->required()
+                    ->maxLength(65535),
+                Forms\Components\Select::make('user_id')
+                    ->relationship('user', 'name')
+                    ->required(),
+                Forms\Components\Select::make('post_id')
+                    ->relationship('post', 'title')
+                    ->required(),
             ]);
     }
 
@@ -31,7 +39,24 @@ class CommentResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('id')
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('content')
+                    ->limit(50)
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('user.name')
+                    ->label('User')
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('post.id')
+                    ->label('Post')
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->dateTime()
+                    ->sortable(),
             ])
             ->filters([
                 //
